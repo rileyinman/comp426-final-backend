@@ -1,0 +1,21 @@
+{
+  "name": "comp426-final-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.9",
+    "@types/node": "^14.14.8",
+    "data-store": "^4.0.3",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.5"
+  }
+}
