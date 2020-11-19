@@ -1,7 +1,7 @@
-enum CellValues {
+enum Cell {
   PLAYER = 'player',
   WALL = 'wall',
   KEY = 'key'
 }
 
-export default CellValues;
+export default Cell;

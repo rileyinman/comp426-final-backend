@@ -1,5 +1,4 @@
-import CellValues from './CellValues.js';
-import { LevelData } from './consts/index.js';
+import { Cell, LevelData } from './consts/index.js';
 
 class Level {
   constructor(
@@ -8,7 +7,7 @@ class Level {
     readonly width: number,
     readonly startx: number,
     readonly starty: number,
-    readonly cells: CellValues[]
+    readonly cells: Cell[]
   ) {}
 
   static getAllIDs() {
