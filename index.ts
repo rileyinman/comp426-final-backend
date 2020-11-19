@@ -2,12 +2,16 @@ import BodyParser from 'body-parser';
 import DataStore from 'data-store';
 import Express from 'express';
 import ExpressSession from 'express-session';
+import TSRest from 'typescript-rest';
 
 import Level from './Level.js';
 import { LevelData } from './consts/index.js';
 import Levels from './levels/index.js';
 
-const app = Express();
+const { Errors, Server } = TSRest;
+
+const app: Express.Application = Express();
+Server.buildServices(app);
 
 app.use(BodyParser.json());
 
@@ -15,20 +19,18 @@ for (const level of Levels) {
   LevelData.set(level.id.toString(), level);
 }
 
-app.get('/level', (req, res) => {
-  res.json(Level.getAllIDs());
-});
+app.use((err: any, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
+  if (err instanceof Errors.NotFoundError) {
+    if (res.headersSent) {
+      return next(err);
+    }
 
-app.get('/level/:id', (req, res) => {
-  const id: string = req.params.id;
-  const level = Level.findById(id);
-
-  if (level == null) {
-    res.status(404).send(`Level ${id} not found`);
-    return;
+    res.set('Content-Type', 'application/json');
+    res.status(err.statusCode);
+    res.json({ error: err.message, code: err.statusCode });
+  } else {
+    next(err);
   }
-
-  res.json(level);
 });
 
 const port = process.env.PORT || 3030;

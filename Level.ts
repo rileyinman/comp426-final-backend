@@ -1,5 +1,9 @@
+import TSRest from 'typescript-rest';
 import { Cell, LevelData } from './consts/index.js';
 
+const { Errors, GET, Path, PathParam } = TSRest;
+
+@Path('/level')
 class Level {
   constructor(
     readonly id: number,
@@ -10,12 +14,19 @@ class Level {
     readonly cells: Cell[]
   ) {}
 
-  static getAllIDs() {
-    return Object.keys(LevelData.data).map((id) => parseInt(id));
+  @GET
+  getAllIDs() {
+    return Object.keys(LevelData.data).map(id => parseInt(id));
   }
 
-  static findById(id: string) {
-    return LevelData.get(id);
+  @GET
+  @Path(':id')
+  getLevel(@PathParam('id') id: string) {
+    const level = LevelData.get(id);
+    if (level == null) {
+      throw new Errors.NotFoundError(`Level ${id} not found`);
+    }
+    return level;
   }
 }
 
