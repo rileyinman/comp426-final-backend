@@ -1,7 +1,7 @@
 import { Cell } from '../consts/index.js';
 import Level from '../Level.js';
 
-let Level1=
+let Level1 =
   new Level(1, 10, 10, [
     Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.WALL, Cell.DOOR5, Cell.WALL, Cell.WALL,
     Cell.WALL, Cell.FLOOR, Cell.FLOOR, Cell.FLOOR, Cell.FLOOR, Cell.FLOOR, Cell.FLOOR, Cell.FLOOR, Cell.WALL, Cell.WALL,

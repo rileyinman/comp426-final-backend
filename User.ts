@@ -5,71 +5,88 @@ const { Errors, GET, HeaderParam, Path, PathParam, POST, PUT } = TSRest;
 
 @Path('/user')
 class User {
-  public scores: number[] = [];
-
   constructor(
-    readonly id: number,
-    public name: string,
-    public player: Player
+    readonly username: string,
+    private password: string,
+    public player: Player,
+    public scores: number[] = []
   ) {}
 
   @GET
-  getAllIds() {
-    return Object.keys(UserData.data).map(id => parseInt(id));
+  getAll(): string[] {
+    return Object.keys(UserData.data);
   }
 
   @POST
-  create(@HeaderParam('name') name: string, @HeaderParam('player') player: string) {
-    const newId: number = this.getAllIds().reduce((a, b) => Math.max(a, b)) + 1;
+  create(
+    @HeaderParam('username') username: string,
+    @HeaderParam('password') password: string,
+    @HeaderParam('player') player: string
+  ) {
+    if (UserData.get(username) != null) {
+      throw new Errors.ConflictError(`User ${username} already exists`);
+    }
+
     const newPlayer: Player = Player[player as keyof typeof Player];
 
     if (newPlayer == null) {
       throw new Errors.BadRequestError('Invalid player type provided');
     }
-    if (name == null) {
-      throw new Errors.BadRequestError('Name not provided, cannot create user');
+
+    if (username == null) {
+      throw new Errors.BadRequestError('Username not provided, cannot create user');
     }
 
-    const newUser: User = new User(newId, name, newPlayer);
-    UserData.set(newUser.id.toString(), newUser);
-    return newUser;
+    if (username.includes(' ')) {
+      throw new Errors.BadRequestError('Username must not contain spaces');
+    }
+
+    const newUser: User = new User(username, password, newPlayer);
+    UserData.set(newUser.username.toString(), newUser);
+    const { password: omitted, ...noPassword } = newUser;
+    return noPassword;
   }
 
   @GET
-  @Path(':id')
-  getById(@PathParam('id') id: string) {
-    const user = UserData.get(id);
+  @Path(':username')
+  get(@PathParam('username') username: string) {
+    const user: User = UserData.get(username);
     if (user == null) {
-      throw new Errors.NotFoundError(`User ${id} not found`);
+      throw new Errors.NotFoundError(`User ${username} not found`);
     }
-    return user;
+    const { password: omitted, ...noPassword } = user;
+    return noPassword;
   }
 
   @PUT
-  @Path(':id')
+  @Path(':username')
   update(
+    @PathParam('username') username: string,
     @HeaderParam('score') score?: number,
     @HeaderParam('level') level?: number,
-    @HeaderParam('name') name?: string,
     @HeaderParam('player') player?: string
   ) {
+    const user = UserData.get(username);
+    let newScores = [...user.scores];
+    let newPlayer = user.player;
+
     if (score != null && level != null) {
-      if (this.scores[level] < score) {
-        this.scores[level] = score;
+      if (newScores.length == level || newScores[level] < score) {
+        newScores[level] = score;
       }
     }
 
-    if (name != null) {
-      this.name = name;
-    }
+    console.log(newScores);
 
     if (this.player != null) {
-      this.player = Player[player as keyof typeof Player];
+      newPlayer = Player[player as keyof typeof Player];
     }
 
-    UserData.set(this.id.toString(), this);
+    const newUser = new User(username, user.password, newPlayer, newScores);
+    console.log(newUser);
+    UserData.set(newUser.username.toString(), newUser);
 
-    return this;
+    return newUser;
   }
 }
 
