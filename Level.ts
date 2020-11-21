@@ -10,8 +10,6 @@ class Level {
     readonly id: number,
     readonly height: number,
     readonly width: number,
-    readonly startx: number,
-    readonly starty: number,
     readonly cells: Cell[]
   ) {}
 
