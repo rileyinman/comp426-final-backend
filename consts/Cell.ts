@@ -11,7 +11,8 @@ enum Cell {
   DOOR2 = 'door2',
   DOOR3 = 'door3',
   DOOR4 = 'door4',
-  DOOR5 = 'door5'
+  DOOR5 = 'door5',
+  NPC = 'npc'
 }
 
 export default Cell;
