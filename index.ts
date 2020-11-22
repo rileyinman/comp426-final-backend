@@ -1,3 +1,4 @@
+import Cors from 'cors';
 import DataStore from 'data-store';
 import DotEnv from 'dotenv';
 import Express from 'express';
@@ -13,11 +14,27 @@ const { Errors, Server } = TSRest;
 DotEnv.config();
 
 const app: Express.Application = Express();
-Server.buildServices(app, Level, Session, User);
 
 if (process.env.SESSION_SECRET == null) {
   throw new Error('No SESSION_SECRET env variable present');
 }
+
+if (process.env.CORS_URL == null) {
+  throw new Error('No CORS_URL env variable present');
+}
+
+app.use(Cors({
+  allowedHeaders: [
+    'Origin',
+    'X-Requested-With',
+    'Content-Type',
+    'Accept',
+    'X-Access-Token'
+  ],
+  credentials: true,
+  methods: ['GET', 'HEAD', 'OPTIONS', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  origin: process.env.CORS_URL
+}));
 
 app.use(ExpressSession({
   name: 'comp426FinalCookie',
@@ -49,6 +66,7 @@ app.use((err: any, req: Express.Request, res: Express.Response, next: Express.Ne
   }
 });
 
+Server.buildServices(app, Level, Session, User);
 const port = process.env.PORT || 3030;
 app.listen(port, () => {
   console.log(`Application listening on port ${port}`);

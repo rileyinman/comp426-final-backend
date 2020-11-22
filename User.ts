@@ -7,7 +7,7 @@ const { Errors, GET, HeaderParam, Path, PathParam, POST, PUT } = TSRest;
 class User {
   constructor(
     readonly username: string,
-    private password: string,
+    public password: string,
     public player: Player,
     public scores: number[] = []
   ) {}

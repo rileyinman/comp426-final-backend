@@ -1,13 +1,13 @@
 import Express from 'express';
 import TSRest from 'typescript-rest';
 import { UserData } from './consts/index.js';
+import User from './User.js';
 
-const { Errors, GET, HeaderParam, Path, POST, PostProcessor, PreProcessor } = TSRest;
+const { Errors, GET, Path, POST, PostProcessor, PreProcessor } = TSRest;
 
 const setCookie = (req: Express.Request) => {
-  const user = UserData.get(req.headers.username);
+  const user = UserData.get(req.body.username);
   if (req.session) {
-    console.log('session exists')
     req.session.user = user;
   }
   console.log(`User ${user.username} authenticated`);
@@ -23,10 +23,14 @@ class Session {
   @POST
   @Path('login')
   @PostProcessor(setCookie)
-  login(@HeaderParam('username') username: string, @HeaderParam('password') password: string) {
-    const userInfo = UserData.get(username);
+  login(user: User) {
+    if (user.username === undefined || user.password === undefined) {
+      throw new Errors.BadRequestError('Please provide a username and password');
+    }
 
-    if (userInfo == null || userInfo.password != password) {
+    const userInfo = UserData.get(user.username);
+
+    if (userInfo == null || userInfo.password != user.password) {
       throw new Errors.UnauthorizedError('Incorrect username or password');
     }
 
