@@ -6,7 +6,11 @@ import Level3 from './Level3.js';
 import Level4 from './Level4.js';
 
 const Levels = [
-  Level0, Level1, Level2, Level3, Level4
+  Level0,
+  Level1,
+  Level2,
+  Level3,
+  Level4
 ];
 
 for (const level of Levels) {
