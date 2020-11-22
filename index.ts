@@ -5,6 +5,8 @@ import Express from 'express';
 import ExpressSession from 'express-session';
 import TSRest from 'typescript-rest';
 
+import { LevelData } from './consts/index.js';
+import Levels from './levels/index.js';
 import Level from './Level.js';
 import Session from './Session.js';
 import User from './User.js';
@@ -65,6 +67,10 @@ app.use((err: any, req: Express.Request, res: Express.Response, next: Express.Ne
     next(err);
   }
 });
+
+for (const level of Levels) {
+  LevelData.set(level.id.toString(), level);
+}
 
 Server.buildServices(app, Level, Session, User);
 const port = process.env.PORT || 3030;

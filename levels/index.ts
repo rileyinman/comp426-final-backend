@@ -13,8 +13,4 @@ const Levels = [
   Level4
 ];
 
-for (const level of Levels) {
-  LevelData.set(level.id.toString(), level);
-}
-
 export default Levels;

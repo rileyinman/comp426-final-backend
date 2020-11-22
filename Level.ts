@@ -1,6 +1,6 @@
 import TSRest from 'typescript-rest';
-import { Cell, LevelData } from './consts/index.js';
 import Levels from './levels/index.js';
+import { Cell, LevelData } from './consts/index.js';
 
 const { Errors, GET, Path, PathParam } = TSRest;
 
@@ -12,13 +12,13 @@ class Level {
   ) {}
 
   @GET
-  getAllIds() {
+  getAll() {
     return Object.keys(LevelData.data).map(id => parseInt(id));
   }
 
   @GET
   @Path(':id')
-  getById(@PathParam('id') id: string) {
+  get(@PathParam('id') id: string) {
     const level = LevelData.get(id);
     if (level == null) {
       throw new Errors.NotFoundError(`Level ${id} not found`);
