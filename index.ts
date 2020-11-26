@@ -43,7 +43,9 @@ app.use(ExpressSession({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
-}))
+}));
+
+Server.buildServices(app, Level, Session, User);
 
 app.use((err: any, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
   if (err instanceof Errors.BadRequestError ||       // 400
@@ -72,7 +74,6 @@ for (const level of Levels) {
   LevelData.set(level.id.toString(), level);
 }
 
-Server.buildServices(app, Level, Session, User);
 const port = process.env.PORT || 3030;
 app.listen(port, () => {
   console.log(`Application listening on port ${port}`);
