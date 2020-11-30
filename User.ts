@@ -18,30 +18,26 @@ class User {
   }
 
   @POST
-  create(
-    @HeaderParam('username') username: string,
-    @HeaderParam('password') password: string,
-    @HeaderParam('player') player: string
-  ) {
-    if (UserData.get(username) != null) {
-      throw new Errors.ConflictError(`User ${username} already exists`);
+  create(user: { username: string, password: string, player: string }) {
+    if (UserData.get(user.username) != null) {
+      throw new Errors.ConflictError(`User ${user.username} already exists`);
     }
 
-    const newPlayer: Player = Player[player as keyof typeof Player];
+    const newPlayer: Player = Player[user.player.toUpperCase() as keyof typeof Player];
 
     if (newPlayer == null) {
       throw new Errors.BadRequestError('Invalid player type provided');
     }
 
-    if (username == null) {
+    if (user.username == null) {
       throw new Errors.BadRequestError('Username not provided, cannot create user');
     }
 
-    if (username.includes(' ')) {
+    if (user.username.includes(' ')) {
       throw new Errors.BadRequestError('Username must not contain spaces');
     }
 
-    const newUser: User = new User(username, password, newPlayer);
+    const newUser: User = new User(user.username, user.password, newPlayer);
     UserData.set(newUser.username.toString(), newUser);
     const { password: omitted, ...noPassword } = newUser;
     return noPassword;
