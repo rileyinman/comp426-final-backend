@@ -5,7 +5,7 @@ let Level1 =
   new Level(1, [
     [ Cell.EMPTY, Cell.EMPTY, Cell.EMPTY, Cell.EMPTY, Cell.EMPTY,  Cell.EMPTY, Cell.EMPTY, Cell.EXIT,  Cell.EMPTY, Cell.EMPTY ],
     [ Cell.WALL,  Cell.WALL,  Cell.WALL,  Cell.WALL,  Cell.WALL,   Cell.WALL,  Cell.WALL,  Cell.DOOR5, Cell.WALL,  Cell.WALL  ],
-    [ Cell.WALL,  Cell.KEY4,  Cell.FLOOR, Cell.FLOOR, Cell.FLOOR,  Cell.FLOOR, Cell.FLOOR, Cell.FLOOR, Cell.WALL,  Cell.WALL  ],
+    [ Cell.WALL,  Cell.KEY4,  Cell.KEY2, Cell.FLOOR, Cell.FLOOR,  Cell.FLOOR, Cell.FLOOR, Cell.FLOOR, Cell.WALL,  Cell.WALL  ],
     [ Cell.WALL,  Cell.WALL,  Cell.WALL,  Cell.DOOR2, Cell.WALL,   Cell.WALL,  Cell.WALL,  Cell.WALL,  Cell.WALL,  Cell.WALL  ],
     [ Cell.WALL,  Cell.KEY5,  Cell.WALL,  Cell.FLOOR, Cell.FLOOR,  Cell.KEY2,  Cell.FLOOR, Cell.FLOOR, Cell.FLOOR, Cell.WALL  ],
     [ Cell.WALL,  Cell.FLOOR, Cell.WALL,  Cell.FLOOR, Cell.FLOOR,  Cell.FLOOR, Cell.FLOOR, Cell.FLOOR, Cell.FLOOR, Cell.WALL  ],
