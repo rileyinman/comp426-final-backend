@@ -2,7 +2,7 @@ import { Cell } from '../consts/index.js';
 import Level from '../Level.js';
 
 let Level2 =
-  new Level(2, [
+  new Level(2, "Key 1 for Key 3.", [
     [ Cell.EMPTY, Cell.EMPTY, Cell.EMPTY, Cell.EMPTY, Cell.EMPTY, Cell.EXIT,   Cell.EMPTY, Cell.EMPTY, Cell.EMPTY, Cell.EMPTY ],
     [ Cell.WALL,  Cell.WALL,  Cell.WALL,  Cell.WALL,  Cell.WALL,  Cell.DOOR5,  Cell.WALL,  Cell.WALL,  Cell.WALL,  Cell.WALL  ],
     [ Cell.WALL,  Cell.KEY2,  Cell.WALL,  Cell.KEY2,  Cell.WALL,  Cell.FLOOR,  Cell.FLOOR, Cell.FLOOR, Cell.NPC,   Cell.WALL  ],
