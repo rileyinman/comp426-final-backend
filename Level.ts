@@ -8,6 +8,8 @@ const { Errors, GET, Path, PathParam } = TSRest;
 class Level {
   constructor(
     readonly id: number,
+    readonly give: Cell[],
+    readonly take: Cell[],
     readonly npcText: string,
     readonly cells: Cell[][]
   ) {}
