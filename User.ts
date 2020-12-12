@@ -69,7 +69,7 @@ class User {
     let newScores = [...user.scores];
     let newPlayer = user.player;
     if (userInfo.level !== undefined && userInfo.score !== undefined) {
-      if (newScores.length == userInfo.level || newScores[userInfo.level] < userInfo.score) {
+      if (userInfo.level <= newScores.length && userInfo.score < newScores[userInfo.level]) {
         newScores[userInfo.level] = userInfo.score;
       }
     }
