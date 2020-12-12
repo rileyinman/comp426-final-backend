@@ -19,7 +19,7 @@ class User {
 
   @POST
   create(user: { username: string, password: string, player: string }) {
-    if (UserData.get(user.username) != null) {
+    if (UserData.get(user.username) !== null) {
       throw new Errors.ConflictError(`User ${user.username} already exists`);
     }
 
@@ -58,31 +58,36 @@ class User {
   @Path(':username')
   update(
     @PathParam('username') username: string,
-    @HeaderParam('score') score?: number,
-    @HeaderParam('level') level?: number,
-    @HeaderParam('player') player?: string
+    userInfo: {
+      password?: string,
+      level?: number,
+      score?: number,
+      player?: string
+    }
   ) {
     const user = UserData.get(username);
     let newScores = [...user.scores];
     let newPlayer = user.player;
-
-    if (score != null && level != null) {
-      if (newScores.length == level || newScores[level] < score) {
-        newScores[level] = score;
+    if (userInfo.level !== undefined && userInfo.score !== undefined) {
+      if (newScores.length == userInfo.level || newScores[userInfo.level] < userInfo.score) {
+        newScores[userInfo.level] = userInfo.score;
       }
     }
 
-    console.log(newScores);
-
-    if (this.player != null) {
-      newPlayer = Player[player as keyof typeof Player];
+    if (userInfo.player !== undefined) {
+      newPlayer = Player[userInfo.player as keyof typeof Player];
     }
 
-    const newUser = new User(username, user.password, newPlayer, newScores);
-    console.log(newUser);
+    let newPassword = user.password;
+    if (userInfo.password !== undefined) {
+      newPassword = userInfo.password;
+    }
+
+    const newUser = new User(username, newPassword, newPlayer, newScores);
     UserData.set(newUser.username.toString(), newUser);
 
-    return newUser;
+    const { password: omitted, ...noPassword } = newUser;
+    return noPassword;
   }
 }
 
