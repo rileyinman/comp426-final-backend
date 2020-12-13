@@ -19,7 +19,7 @@ class User {
 
   @POST
   create(user: { username: string, password: string, player: string }) {
-    if (UserData.get(user.username) !== null) {
+    if (UserData.get(user.username) !== undefined) {
       throw new Errors.ConflictError(`User ${user.username} already exists`);
     }
 
