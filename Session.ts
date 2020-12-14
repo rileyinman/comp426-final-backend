@@ -10,7 +10,6 @@ const setCookie = (req: Express.Request) => {
   if (req.session) {
     req.session.user = user;
   }
-  console.log(`User ${user.username} authenticated`);
 }
 
 const deleteCookie = (req: Express.Request) => {
@@ -24,7 +23,7 @@ class Session {
   @Path('login')
   @PostProcessor(setCookie)
   login(user: User) {
-    if (user.username === undefined || user.password === undefined) {
+    if (user.username == null || user.password == null) {
       throw new Errors.BadRequestError('Please provide a username and password');
     }
 

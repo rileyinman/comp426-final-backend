@@ -19,7 +19,7 @@ class User {
 
   @POST
   create(user: { username: string, password: string, player: string }) {
-    if (UserData.get(user.username) !== undefined) {
+    if (UserData.get(user.username) != null) {
       throw new Errors.ConflictError(`User ${user.username} already exists`);
     }
 
@@ -68,18 +68,20 @@ class User {
     const user = UserData.get(username);
     let newScores = [...user.scores];
     let newPlayer = user.player;
-    if (userInfo.level !== undefined && userInfo.score !== undefined) {
-      if (userInfo.level <= newScores.length && userInfo.score < newScores[userInfo.level]) {
+    if (userInfo.level != null && userInfo.score != null) {
+      if (userInfo.level == newScores.length ||
+          (userInfo.level < newScores.length &&
+           userInfo.score < newScores[userInfo.level])) {
         newScores[userInfo.level] = userInfo.score;
       }
     }
 
-    if (userInfo.player !== undefined) {
+    if (userInfo.player != null) {
       newPlayer = Player[userInfo.player as keyof typeof Player];
     }
 
     let newPassword = user.password;
-    if (userInfo.password !== undefined) {
+    if (userInfo.password != null) {
       newPassword = userInfo.password;
     }
 
