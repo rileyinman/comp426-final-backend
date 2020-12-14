@@ -77,7 +77,7 @@ class User {
     }
 
     if (userInfo.player != null) {
-      newPlayer = Player[userInfo.player as keyof typeof Player];
+      newPlayer = userInfo.player as keyof typeof Player;
     }
 
     let newPassword = user.password;
